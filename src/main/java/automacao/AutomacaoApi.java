@@ -10,13 +10,12 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AutomacaoApi {
-    private Integer id;
-
-    private StatusEnum status;
+    private final StatusEnum status;
 
     private boolean ativo;
 
@@ -38,10 +37,9 @@ public class AutomacaoApi {
 
     private String horarioFim;
 
-    public AutomacaoApi(Integer id, StatusEnum status, boolean ativo, boolean domingo, boolean segunda, boolean terca,
+    public AutomacaoApi(StatusEnum status, boolean ativo, boolean domingo, boolean segunda, boolean terca,
                         boolean quarta, boolean quinta, boolean sexta, boolean sabado, String horarioInicio,
                         String horarioFim) {
-        this.id = id;
         this.status = status;
         this.ativo = ativo;
         this.domingo = domingo;
@@ -57,102 +55,6 @@ public class AutomacaoApi {
 
     public AutomacaoApi(StatusEnum status) {
         this.status = status;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public StatusEnum getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusEnum status) {
-        this.status = status;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
-
-    public boolean isDomingo() {
-        return domingo;
-    }
-
-    public void setDomingo(boolean domingo) {
-        this.domingo = domingo;
-    }
-
-    public boolean isSegunda() {
-        return segunda;
-    }
-
-    public void setSegunda(boolean segunda) {
-        this.segunda = segunda;
-    }
-
-    public boolean isTerca() {
-        return terca;
-    }
-
-    public void setTerca(boolean terca) {
-        this.terca = terca;
-    }
-
-    public boolean isQuarta() {
-        return quarta;
-    }
-
-    public void setQuarta(boolean quarta) {
-        this.quarta = quarta;
-    }
-
-    public boolean isQuinta() {
-        return quinta;
-    }
-
-    public void setQuinta(boolean quinta) {
-        this.quinta = quinta;
-    }
-
-    public boolean isSexta() {
-        return sexta;
-    }
-
-    public void setSexta(boolean sexta) {
-        this.sexta = sexta;
-    }
-
-    public boolean isSabado() {
-        return sabado;
-    }
-
-    public void setSabado(boolean sabado) {
-        this.sabado = sabado;
-    }
-
-    public String getHorarioInicio() {
-        return horarioInicio;
-    }
-
-    public void setHorarioInicio(String horarioInicio) {
-        this.horarioInicio = horarioInicio;
-    }
-
-    public String getHorarioFim() {
-        return horarioFim;
-    }
-
-    public void setHorarioFim(String horarioFim) {
-        this.horarioFim = horarioFim;
     }
 
     public static AutomacaoApi recuperarDados(String link, Integer idAutomacao) throws RecuperarDadosException {
@@ -210,7 +112,81 @@ public class AutomacaoApi {
         String horarioInicio = String.valueOf(map.get("horarioInicio"));
         String horarioFim = String.valueOf(map.get("horarioFim"));
 
-        return new AutomacaoApi(id, status, ativo, domingo, segunda, terca, quarta, quinta, sexta, sabado,
+        return new AutomacaoApi(status, ativo, domingo, segunda, terca, quarta, quinta, sexta, sabado,
                 horarioInicio, horarioFim);
+    }
+
+    public boolean isExecutar(Calendar calendar) {
+        if (!ativo) {
+            return false;
+        }
+
+        int diaSemana = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (diaSemana) {
+            case 1:
+                if (!domingo) {
+                    return false;
+                }
+                break;
+
+            case 2:
+                if (!segunda) {
+                    return false;
+                }
+                break;
+
+            case 3:
+                if (!terca) {
+                    return false;
+                }
+                break;
+
+            case 4:
+                if (!quarta) {
+                    return false;
+                }
+                break;
+
+            case 5:
+                if (!quinta) {
+                    return false;
+                }
+                break;
+
+            case 6:
+                if (!sexta) {
+                    return false;
+                }
+                break;
+
+            case 7:
+                if (!sabado) {
+                    return false;
+                }
+                break;
+        }
+
+        int hora = calendar.get(Calendar.HOUR_OF_DAY);
+        int minuto = calendar.get(Calendar.MINUTE);
+        int horaInicio = getHora(horarioInicio);
+        int minutoInicio = getMinuto(horarioInicio);
+        int horaFim = getHora(horarioFim);
+        int minutoFim = getMinuto(horarioFim);
+        if (hora < horaInicio ||
+                (hora == horaInicio && minuto < minutoInicio) ||
+                hora > horaFim ||
+                (hora == horaFim && minuto > minutoFim)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private int getHora(String horario) {
+        return Integer.parseInt(horario.substring(0, 2));
+    }
+
+    private int getMinuto(String horario) {
+        return Integer.parseInt(horario.substring(3));
     }
 }
