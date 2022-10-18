@@ -120,4 +120,8 @@ public class AutomacaoApi {
     private int getMinuto(String horario) {
         return Integer.parseInt(horario.substring(3));
     }
+
+    public StatusEnum getStatus() {
+        return status;
+    }
 }
