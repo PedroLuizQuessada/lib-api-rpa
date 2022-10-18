@@ -103,10 +103,10 @@ public class AutomacaoApi {
         int minutoInicio = getMinuto(horarioInicio);
         int horaFim = getHora(horarioFim);
         int minutoFim = getMinuto(horarioFim);
-        if (hora < horaInicio ||
-                (hora == horaInicio && minuto < minutoInicio) ||
-                hora > horaFim ||
-                (hora == horaFim && minuto > minutoFim)) {
+        if ((horaInicio > -1 && hora < horaInicio) ||
+                (horaInicio > -1 && minutoInicio > -1 && hora == horaInicio && minuto < minutoInicio) ||
+                (horaFim > -1 && hora > horaFim) ||
+                (horaFim > -1 && minutoFim > -1 && hora == horaFim && minuto > minutoFim)) {
             return false;
         }
 
@@ -114,11 +114,21 @@ public class AutomacaoApi {
     }
 
     private int getHora(String horario) {
-        return Integer.parseInt(horario.substring(0, 2));
+        if (horario.length() > 0) {
+            return Integer.parseInt(horario.substring(0, 2));
+        }
+        else {
+            return -1;
+        }
     }
 
     private int getMinuto(String horario) {
-        return Integer.parseInt(horario.substring(3));
+        if (horario.length() > 0) {
+            return Integer.parseInt(horario.substring(3));
+        }
+        else {
+            return -1;
+        }
     }
 
     public StatusEnum getStatus() {
