@@ -124,4 +124,44 @@ public class AutomacaoApi {
     public StatusEnum getStatus() {
         return status;
     }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public boolean isDomingo() {
+        return domingo;
+    }
+
+    public boolean isSegunda() {
+        return segunda;
+    }
+
+    public boolean isTerca() {
+        return terca;
+    }
+
+    public boolean isQuarta() {
+        return quarta;
+    }
+
+    public boolean isQuinta() {
+        return quinta;
+    }
+
+    public boolean isSexta() {
+        return sexta;
+    }
+
+    public boolean isSabado() {
+        return sabado;
+    }
+
+    public String getHorarioInicio() {
+        return horarioInicio;
+    }
+
+    public String getHorarioFim() {
+        return horarioFim;
+    }
 }
