@@ -3,6 +3,7 @@ package util;
 import automacao.AutomacaoApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import enums.StatusEnum;
+import exceptions.AutomacaoNaoIdentificadaException;
 import exceptions.RecuperarDadosException;
 
 import java.io.BufferedReader;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AutomacaoApiUtil {
-    public static AutomacaoApi executarRequisicao(String link) throws RecuperarDadosException {
+    public static AutomacaoApi executarRequisicao(String link, Integer idAutomacao) throws RecuperarDadosException, AutomacaoNaoIdentificadaException {
         try {
             URL url = new URL(link);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -42,7 +43,11 @@ public class AutomacaoApiUtil {
 
             Map<String, Object> map = new ObjectMapper().readValue(String.valueOf(content), HashMap.class);
 
-            return mapToAutomacaoApi(map);
+            AutomacaoApi automacaoApi = mapToAutomacaoApi(map);
+            if (automacaoApi.getStatus().equals(StatusEnum.NAOENCONTRADO)) {
+                throw new AutomacaoNaoIdentificadaException(idAutomacao);
+            }
+            return automacaoApi;
         }
         catch (IOException e) {
             throw new RecuperarDadosException(e.getMessage());
