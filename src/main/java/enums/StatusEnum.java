@@ -2,5 +2,7 @@ package enums;
 
 public enum StatusEnum {
     OK,
-    NAOENCONTRADO
+    NAOENCONTRADO,
+    TOKENINVALIDO,
+    MENSAGEM_INVALIDA
 }
