@@ -1,6 +1,7 @@
 package util;
 
 import automacao.AutomacaoApi;
+import automacao.PendenciaApi;
 import automacao.Requisicao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import enums.StatusEnum;
@@ -76,12 +77,16 @@ public class AutomacaoApiUtil {
         boolean sabado = (boolean) map.get("sabado");
         String horarioInicio = String.valueOf(map.get("horarioInicio"));
         String horarioFim = String.valueOf(map.get("horarioFim"));
+        String estrutura = String.valueOf(map.get("estrutura"));
+        boolean habilitarTexto = (boolean) map.get("habilitarTexto");
+        String texto = String.valueOf(map.get("texto"));
+        List<PendenciaApi> pendencias = (ArrayList<PendenciaApi>) map.get("pendencias");
 
         return new AutomacaoApi(status, ativo, domingo, segunda, terca, quarta, quinta, sexta, sabado,
-                horarioInicio, horarioFim);
+                horarioInicio, horarioFim, estrutura, habilitarTexto, texto, pendencias);
     }
 
     private static String requisicaoToJson(Requisicao requisicao) {
-        return String.format("{\n  \"link\":\"%s\",\n  \"token\":\"%s\",\n  \"idAutomacao\":%d,\n  \"mensagem\":\"%s\"\n}", requisicao.getLink(), requisicao.getToken(), requisicao.getIdAutomacao(), requisicao.getMensagem());
+        return String.format("{\n  \"link\":\"%s\",\n  \"token\":\"%s\",\n  \"idAutomacao\":%d,\n  \"mensagem\":\"%s\",\n  \"idPendencia\":%d\n}", requisicao.getLink(), requisicao.getToken(), requisicao.getIdAutomacao(), requisicao.getMensagem(), requisicao.getIdPendencia());
     }
 }

@@ -8,13 +8,15 @@ public class Requisicao {
     private String token;
     private Integer idAutomacao;
     private String mensagem;
+    private Integer idPendencia;
 
     @JsonCreator
-    public Requisicao(@JsonProperty("link") String link, @JsonProperty("token") String token, @JsonProperty("idAutomacao") Integer idAutomacao, @JsonProperty("mensagem") String mensagem) {
+    public Requisicao(@JsonProperty("link") String link, @JsonProperty("token") String token, @JsonProperty("idAutomacao") Integer idAutomacao, @JsonProperty("mensagem") String mensagem, @JsonProperty("idPendencia") Integer idPendencia) {
         this.link = link;
         this.token = token;
         this.idAutomacao = idAutomacao;
         this.mensagem = mensagem;
+        this.idPendencia = idPendencia;
     }
 
     public String getLink() {
@@ -47,5 +49,13 @@ public class Requisicao {
 
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
+    }
+
+    public Integer getIdPendencia() {
+        return idPendencia;
+    }
+
+    public void setIdPendencia(Integer idPendencia) {
+        this.idPendencia = idPendencia;
     }
 }

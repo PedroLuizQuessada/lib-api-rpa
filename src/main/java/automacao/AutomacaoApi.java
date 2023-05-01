@@ -1,8 +1,9 @@
 package automacao;
 
 import enums.StatusEnum;
-
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class AutomacaoApi {
     private final StatusEnum status;
@@ -27,9 +28,17 @@ public class AutomacaoApi {
 
     private String horarioFim;
 
+    private String estrutura;
+
+    private boolean habilitarTexto;
+
+    private String texto;
+
+    private List<PendenciaApi> pendencias;
+
     public AutomacaoApi(StatusEnum status, boolean ativo, boolean domingo, boolean segunda, boolean terca,
                         boolean quarta, boolean quinta, boolean sexta, boolean sabado, String horarioInicio,
-                        String horarioFim) {
+                        String horarioFim, String estrutura, boolean habilitarTexto, String texto, List<PendenciaApi> pendencias) {
         this.status = status;
         this.ativo = ativo;
         this.domingo = domingo;
@@ -41,6 +50,10 @@ public class AutomacaoApi {
         this.sabado = sabado;
         this.horarioInicio = horarioInicio;
         this.horarioFim = horarioFim;
+        this.estrutura = estrutura;
+        this.habilitarTexto = habilitarTexto;
+        this.texto = texto;
+        this.pendencias = pendencias;
     }
 
     public AutomacaoApi(StatusEnum status) {
@@ -173,5 +186,37 @@ public class AutomacaoApi {
 
     public String getHorarioFim() {
         return horarioFim;
+    }
+
+    public String getEstrutura() {
+        return estrutura;
+    }
+
+    public void setEstrutura(String estrutura) {
+        this.estrutura = estrutura;
+    }
+
+    public boolean isHabilitarTexto() {
+        return habilitarTexto;
+    }
+
+    public void setHabilitarTexto(boolean habilitarTexto) {
+        this.habilitarTexto = habilitarTexto;
+    }
+
+    public List<PendenciaApi> getPendencias() {
+        return pendencias;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public void setPendencias(List<PendenciaApi> pendencias) {
+        this.pendencias = pendencias;
     }
 }
